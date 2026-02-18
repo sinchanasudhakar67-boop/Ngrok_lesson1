@@ -1,18 +1,17 @@
 from fastapi import FastAPI
 from routes.User_routes import router as user_router
-from sqlalchemy import create_engine
-from db import get_db,DATABASE_URL
-import os
+from db import engine
 from models import Base
+
 app = FastAPI()
 
-#cors
+# Include routes
 app.include_router(user_router)
 
-# to create database
-
-engine = create_engine(DATABASE_URL)
-Base.metadata.create_all(engine)
+# Create tables on startup
+@app.on_event("startup")
+def startup_event():
+    Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def read_root():  
