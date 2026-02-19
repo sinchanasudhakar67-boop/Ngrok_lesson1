@@ -7,3 +7,4 @@ class User(Base):
     id=Column(Integer,primary_key=True,index=True)
     email=Column(String,index=True)
     password=Column(String)
+    api_key=Column(String)
